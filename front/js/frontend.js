@@ -92,6 +92,45 @@ async function cadastrarUsuario() {
             ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000)
     }
 }
+
+//só para ver que é possível, vamos definir essa função como um arrow function
+//esse construção é análoga a
+//async function fazerLogin(){}
+const fazerLogin = async () => {
+    let usuarioLoginInput = document.querySelector('#usuarioLoginInput')
+    let passwordLoginInput = document.querySelector('#passwordLoginInput')
+    let usuarioLogin = usuarioLoginInput.value
+    let passwordLogin = passwordLoginInput.value
+
+    if (usuarioLogin && passwordLogin) {
+        try {
+            const loginEndpoint = '/login'
+            const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
+            //já já vamos fazer algo com a resposta (pegar o token)
+            const response = await axios.post(
+                URLCompleta,
+                { login: usuarioLogin, password: passwordLogin }
+            )
+            console.log(responde.data)
+            usuarioLoginInput.value = ""
+            passwordLoginInput.value = ""
+            exibirAlerta('.alert-modal-login', "Login efetuado com sucesso!",
+                ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
+            ocultarModal('#modalLogin', 2000)
+            const cadastrarFilmeButton =
+                document.querySelector('#cadastrarFilmeButton')
+            cadastrarFilmeButton.disabled = false
+        }
+        catch (error) {
+//daqui a pouco fazemos o tratamento de coisas ruins, ou seja especificamos o fluxo alternativo de execução
+        }
+    }
+    else {
+        exibirAlerta('.alert-modal-login', 'Preencha todos os campos', ['show',
+            'alert-danger'], ['d-none', 'alert-success'], 2000)
+    }
+}
+
 function ocultarModal(seletor, timeout) {
     setTimeout(() => {
         let modal = bootstrap.Modal.getInstance(document.querySelector(seletor))
